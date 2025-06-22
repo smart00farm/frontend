@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Farming System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Cairo', sans-serif;
+      background-color: #121212;
+      color: #FFD700;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body.light-mode {
+      background-color: #f5f9f7;
+      color: #2e7d32;
+    }
+
+    header {
+      position: relative;
+      width: 100%;
+      height: 300px;
+      overflow: hidden;
+    }
+
+    header video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.5);
+    }
+
+    header .overlay-text {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      text-align: left;
+    }
+
+    header .overlay-text h1,
+    header .overlay-text p {
+      color: inherit;
+    }
+
+    .lang-toggle,
+    .mode-toggle {
+      position: absolute;
+      background: #FFD700;
+      color: #121212;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .lang-toggle {
+      top: 10px;
+      right: 20px;
+    }
+
+    .mode-toggle {
+      top: 50px;
+      right: 20px;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 30px;
+    }
+
+    .card {
+      background: #1e1e1e;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    body.light-mode .card {
+      background: white;
+      box-shadow: 0 0 10px rgba(46, 125, 50, 0.1);
+    }
+
+    .card:hover {
+      box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+    }
+
+    body.light-mode .card:hover {
+      box-shadow: 0 8px 20px rgba(46, 125, 50, 0.3);
+    }
+
+    .card img {
+      width: 60px;
+      transition: transform 0.3s ease;
+      filter: drop-shadow(0 0 5px #FFD700);
+    }
+
+    body.light-mode .card img {
+      filter: drop-shadow(0 0 5px #2e7d32);
+    }
+
+    .card:hover img {
+      transform: scale(1.1);
+    }
+
+    .card h3 {
+      margin: 15px 0 10px;
+      color: inherit;
+    }
+
+    .progress-bar {
+      height: 8px;
+      width: 100%;
+      background: #333;
+      border-radius: 5px;
+      margin: 10px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress {
+      height: 100%;
+      width: 0%;
+      background-color: #00bcd4;
+      transition: width 0.5s ease;
+    }
+
+    body.light-mode .progress {
+      background-color: #2196f3;
+    }
+
+    .value-label {
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      header .overlay-text h1 {
+        font-size: 1.6em;
+      }
+
+      header .overlay-text p {
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <video autoplay loop muted playsinline>
+      <source src="your_intro_video.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <div class="overlay-text">
+      <h1>AI Power for Smart Farming</h1>
+      <p>IOT TITENS – Made in Egypt 🇪🇬</p>
+    </div>
+    <button class="lang-toggle" onclick="toggleLang()">عربي</button>
+    <button class="mode-toggle" onclick="toggleMode()">🌙</button>
+  </header>
+
+  <section class="dashboard" id="dashboard">
+    <div class="card">
+      <img src="https://img.icons8.com/ios/100/000000/plant-under-rain.png" alt="Soil Moisture Icon">
+      <h3>Soil Moisture</h3>
+      <div class="progress-bar"><div class="progress" style="width: 0%;"></div></div>
+      <div class="value-label">0%</div>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/ios/100/000000/temperature.png" alt="Temperature Icon">
+      <h3>Temperature</h3>
+      <div class="progress-bar"><div class="progress" style="width: 0%;"></div></div>
+      <div class="value-label">0°C</div>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/ios/100/000000/hygrometer.png" alt="Humidity Icon">
+      <h3>Humidity</h3>
+      <div class="progress-bar"><div class="progress" style="width: 0%;"></div></div>
+      <div class="value-label">0%</div>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/ios/100/000000/sun--v1.png" alt="Light Icon">
+      <h3>Light Level</h3>
+      <div class="progress-bar"><div class="progress" style="width: 0%;"></div></div>
+      <div class="value-label">0 Lux</div>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/ios/100/000000/rain.png" alt="Rain Icon">
+      <h3>Rain Forecast</h3>
+      <div class="progress-bar"><div class="progress" style="width: 0%;"></div></div>
+      <div class="value-label">0% Chance</div>
+    </div>
+  </section>
+
+  <script>
+    let currentLang = 'en';
+    const dashboard = document.getElementById("dashboard");
+
+    function toggleLang() {
+      const btn = document.querySelector(".lang-toggle");
+      currentLang = currentLang === 'en' ? 'ar' : 'en';
+      btn.textContent = currentLang === 'en' ? 'عربي' : 'English';
+
+      const texts = {
+        en: ['Soil Moisture', 'Temperature', 'Humidity', 'Light Level', 'Rain Forecast'],
+        ar: ['رطوبة التربة', 'درجة الحرارة', 'الرطوبة', 'شدة الإضاءة', 'توقع المطر']
+      };
+
+      dashboard.querySelectorAll(".card").forEach((card, i) => {
+        card.querySelector("h3").textContent = texts[currentLang][i];
+      });
+
+      const overlayText = {
+        en: { title: "AI Power for Smart Farming", subtitle: "IOT TITENS – Made in Egypt 🇪🇬" },
+        ar: { title: "الذكاء الاصطناعي للزراعة الذكية", subtitle: "أيوتي تيتنز – صنع في مصر 🇪🇬" }
+      };
+
+      document.querySelector(".overlay-text h1").textContent = overlayText[currentLang].title;
+      document.querySelector(".overlay-text p").textContent = overlayText[currentLang].subtitle;
+    }
+
+    function toggleMode() {
+      const body = document.body;
+      const btn = document.querySelector(".mode-toggle");
+      const isLight = body.classList.toggle("light-mode");
+      btn.textContent = isLight ? '☀' : '🌙';
+    }
+  </script>
+</body>
+</html>
