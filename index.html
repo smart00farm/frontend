@@ -7,7 +7,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    /* نفس التنسيقات اللي كتبتها */
     body {
       margin: 0;
       font-family: 'Cairo', sans-serif;
@@ -59,8 +58,15 @@
       font-weight: bold;
     }
 
-    .lang-toggle { top: 10px; right: 20px; }
-    .mode-toggle { top: 50px; right: 20px; }
+    .lang-toggle {
+      top: 10px;
+      right: 20px;
+    }
+
+    .mode-toggle {
+      top: 50px;
+      right: 20px;
+    }
 
     .dashboard {
       display: grid;
@@ -122,13 +128,13 @@
 
     .progress {
       height: 100%;
-      width: 0%;
-      background-color: #00bcd4;
+      width: 70%;
+      background-color: #00bcd4; /* Default for dark mode */
       transition: width 0.5s ease;
     }
 
     body.light-mode .progress {
-      background-color: #2196f3;
+      background-color: #2196f3; /* Lighter blue for light mode */
     }
 
     .value-label {
@@ -136,8 +142,13 @@
     }
 
     @media (max-width: 600px) {
-      header .overlay-text h1 { font-size: 1.6em; }
-      header .overlay-text p { font-size: 1em; }
+      header .overlay-text h1 {
+        font-size: 1.6em;
+      }
+
+      header .overlay-text p {
+        font-size: 1em;
+      }
     }
   </style>
 </head>
@@ -157,33 +168,40 @@
 
   <section class="dashboard" id="dashboard">
     <div class="card">
-      <img src="https://img.icons8.com/ios/100/000000/plant-under-rain.png" alt="Soil Moisture Icon">
+      <img src="https://img.icons8.com/ios/100/000000/plant-under-rain.png" alt="Soil">
       <h3>Soil Moisture</h3>
-      <div class="progress-bar"><div class="progress"></div></div>
-      <div class="value-label">0%</div>
+      <div class="progress-bar"><div class="progress" style="width: 70%;"></div></div>
+      <div class="value-label">70%</div>
     </div>
     <div class="card">
-      <img src="https://img.icons8.com/ios/100/000000/temperature.png" alt="Temperature Icon">
+      <img src="https://img.icons8.com/ios/100/000000/temperature.png" alt="Temp">
       <h3>Temperature</h3>
-      <div class="progress-bar"><div class="progress"></div></div>
-      <div class="value-label">0°C</div>
+      <div class="progress-bar"><div class="progress" style="width: 65%;"></div></div>
+      <div class="value-label">26.5°C</div>
     </div>
     <div class="card">
-      <img src="https://img.icons8.com/ios/100/000000/hygrometer.png" alt="Humidity Icon">
+      <img src="https://img.icons8.com/ios/100/000000/hygrometer.png" alt="Humidity">
       <h3>Humidity</h3>
-      <div class="progress-bar"><div class="progress"></div></div>
-      <div class="value-label">0%</div>
+      <div class="progress-bar"><div class="progress" style="width: 80%;"></div></div>
+      <div class="value-label">80%</div>
     </div>
     <div class="card">
-      <img src="https://img.icons8.com/ios/100/000000/sun--v1.png" alt="Light Icon">
+      <img src="https://img.icons8.com/ios/100/000000/sun--v1.png" alt="Light">
       <h3>Light Level</h3>
-      <div class="progress-bar"><div class="progress"></div></div>
-      <div class="value-label">0 Lux</div>
+      <div class="progress-bar"><div class="progress" style="width: 90%;"></div></div>
+      <div class="value-label">900 Lux</div>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/ios/100/000000/rain.png" alt="Rain">
+      <h3>Rain Forecast</h3>
+      <div class="progress-bar"><div class="progress" style="width: 40%;"></div></div>
+      <div class="value-label">40% Chance</div>
     </div>
   </section>
 
   <script>
-    const backendURL = "https://bc9aba15-ae9e-48fc-a83f-6675ab5f5199-00-3uieuxvtmky2r.riker.replit.dev/";
+    let currentLang = 'en';
+    const dashboard = document.getElementById("dashboard");
 
     function toggleLang() {
       const btn = document.querySelector(".lang-toggle");
@@ -191,21 +209,24 @@
       btn.textContent = currentLang === 'en' ? 'عربي' : 'English';
 
       const texts = {
-        en: ['Soil Moisture', 'Temperature', 'Humidity', 'Light Level'],
-        ar: ['رطوبة التربة', 'درجة الحرارة', 'الرطوبة', 'شدة الإضاءة']
+        en: [
+          'Soil Moisture',
+          'Temperature',
+          'Humidity',
+          'Light Level',
+          'Rain Forecast'
+        ],
+        ar: [
+          'رطوبة التربة',
+          'درجة الحرارة',
+          'الرطوبة',
+          'شدة الإضاءة',
+          'توقع المطر'
+        ]
       };
-
-      document.querySelectorAll(".card").forEach((card, i) => {
+      dashboard.querySelectorAll(".card").forEach((card, i) => {
         card.querySelector("h3").textContent = texts[currentLang][i];
       });
-
-      const overlayText = {
-        en: { title: "AI Power for Smart Farming", subtitle: "IOT TITENS – Made in Egypt 🇪🇬" },
-        ar: { title: "الذكاء الاصطناعي للزراعة الذكية", subtitle: "أيوتي تيتنز – صنع في مصر 🇪🇬" }
-      };
-
-      document.querySelector(".overlay-text h1").textContent = overlayText[currentLang].title;
-      document.querySelector(".overlay-text p").textContent = overlayText[currentLang].subtitle;
     }
 
     function toggleMode() {
@@ -214,32 +235,6 @@
       const isLight = body.classList.toggle("light-mode");
       btn.textContent = isLight ? '☀' : '🌙';
     }
-
-    // ✅ ربط الـ Dashboard بالباك اند
-    fetch(`${backendURL}/api/sensors`)
-      .then(res => res.json())
-      .then(data => {
-        const cards = document.querySelectorAll(".card");
-
-        // Soil Moisture
-        cards[0].querySelector(".progress").style.width = `${data.soil_moisture || 0}%`;
-        cards[0].querySelector(".value-label").textContent = `${data.soil_moisture || 0}%`;
-
-        // Temperature
-        cards[1].querySelector(".progress").style.width = `${data.temperature || 0}%`;
-        cards[1].querySelector(".value-label").textContent = `${data.temperature || 0}°C`;
-
-        // Humidity
-        cards[2].querySelector(".progress").style.width = `${data.humidity || 0}%`;
-        cards[2].querySelector(".value-label").textContent = `${data.humidity || 0}%`;
-
-        // LDR (Light Level)
-        cards[3].querySelector(".progress").style.width = `${data.ldr || 0}%`;
-        cards[3].querySelector(".value-label").textContent = `${data.ldr || 0} Lux`;
-      })
-      .catch(error => {
-        console.error("Error fetching sensor data:", error);
-      });
   </script>
 </body>
 </html>
