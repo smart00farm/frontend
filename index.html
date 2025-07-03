@@ -7,157 +7,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      margin: 0;
-      font-family: 'Cairo', sans-serif;
-      background-color: #121212;
-      color: #FFD700;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    body.light-mode {
-      background-color: #f5f9f7;
-      color: #2e7d32;
-    }
-
-    header {
-      position: relative;
-      width: 100%;
-      height: 300px;
-      overflow: hidden;
-    }
-
-    header video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: brightness(0.5);
-    }
-
-    header .overlay-text {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      text-align: left;
-    }
-
-    header .overlay-text h1,
-    header .overlay-text p {
-      color: inherit;
-    }
-
-    .lang-toggle,
-    .mode-toggle {
-      position: absolute;
-      background: #FFD700;
-      color: #121212;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .lang-toggle {
-      top: 10px;
-      right: 20px;
-    }
-
-    .mode-toggle {
-      top: 50px;
-      right: 20px;
-    }
-
-    .dashboard {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-      padding: 30px;
-    }
-
-    .card {
-      background: #1e1e1e;
-      border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
-      text-align: center;
-      transition: all 0.3s ease;
-    }
-
-    body.light-mode .card {
-      background: white;
-      box-shadow: 0 0 10px rgba(46, 125, 50, 0.1);
-    }
-
-    .card:hover {
-      box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
-    }
-
-    body.light-mode .card:hover {
-      box-shadow: 0 8px 20px rgba(46, 125, 50, 0.3);
-    }
-
-    .card img {
-      width: 60px;
-      transition: transform 0.3s ease;
-      filter: drop-shadow(0 0 5px #FFD700);
-    }
-
-    body.light-mode .card img {
-      filter: drop-shadow(0 0 5px #2e7d32);
-    }
-
-    .card:hover img {
-      transform: scale(1.1);
-    }
-
-    .card h3 {
-      margin: 15px 0 10px;
-      color: inherit;
-    }
-
-    .progress-bar {
-      height: 8px;
-      width: 100%;
-      background: #333;
-      border-radius: 5px;
-      margin: 10px 0;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .progress {
-      height: 100%;
-      width: 70%;
-      background-color: #00bcd4; /* Default for dark mode */
-      transition: width 0.5s ease;
-    }
-
-    body.light-mode .progress {
-      background-color: #2196f3; /* Lighter blue for light mode */
-    }
-
-    .value-label {
-      font-weight: bold;
-    }
-
-    @media (max-width: 600px) {
-      header .overlay-text h1 {
-        font-size: 1.6em;
-      }
-
-      header .overlay-text p {
-        font-size: 1em;
-      }
-    }
+    /* نفس الاستايلات اللي عندك بدون تغيير */
   </style>
 </head>
 <body>
   <header>
     <video controls width="100%">
-  <source src="https://smartfarm-api.replit.app/uploads/videos/iot.mp4" type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
+      <source src="https://bc9aba15-ae9e-48fc-a83f-6675ab5f5199-00-3uieuxvtmky2r.riker.replit.dev/uploads/videos/iot.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
     <div class="overlay-text">
       <h1>AI Power for Smart Farming</h1>
       <p>IOT TITENS – Made in Egypt 🇪🇬</p>
@@ -170,70 +28,79 @@
     <div class="card">
       <img src="https://img.icons8.com/ios/100/000000/plant-under-rain.png" alt="Soil">
       <h3>Soil Moisture</h3>
-      <div class="progress-bar"><div class="progress" style="width: 70%;"></div></div>
-      <div class="value-label">70%</div>
+      <div class="progress-bar"><div class="progress" id="moisture-bar"></div></div>
+      <div class="value-label" id="moisture-val">--%</div>
     </div>
     <div class="card">
       <img src="https://img.icons8.com/ios/100/000000/temperature.png" alt="Temp">
       <h3>Temperature</h3>
-      <div class="progress-bar"><div class="progress" style="width: 65%;"></div></div>
-      <div class="value-label">26.5°C</div>
+      <div class="progress-bar"><div class="progress" id="temp-bar"></div></div>
+      <div class="value-label" id="temp-val">--°C</div>
     </div>
     <div class="card">
       <img src="https://img.icons8.com/ios/100/000000/hygrometer.png" alt="Humidity">
       <h3>Humidity</h3>
-      <div class="progress-bar"><div class="progress" style="width: 80%;"></div></div>
-      <div class="value-label">80%</div>
+      <div class="progress-bar"><div class="progress" id="humidity-bar"></div></div>
+      <div class="value-label" id="humidity-val">--%</div>
     </div>
     <div class="card">
       <img src="https://img.icons8.com/ios/100/000000/sun--v1.png" alt="Light">
       <h3>Light Level</h3>
-      <div class="progress-bar"><div class="progress" style="width: 90%;"></div></div>
-      <div class="value-label">900 Lux</div>
-    </div>
-    <div class="card">
-      <img src="https://img.icons8.com/ios/100/000000/rain.png" alt="Rain">
-      <h3>Rain Forecast</h3>
-      <div class="progress-bar"><div class="progress" style="width: 40%;"></div></div>
-      <div class="value-label">40% Chance</div>
+      <div class="progress-bar"><div class="progress" id="ldr-bar"></div></div>
+      <div class="value-label" id="ldr-val">-- Lux</div>
     </div>
   </section>
 
   <script>
-    let currentLang = 'en';
-    const dashboard = document.getElementById("dashboard");
+    const backendURL = "https://bc9aba15-ae9e-48fc-a83f-6675ab5f5199-00-3uieuxvtmky2r.riker.replit.dev";
 
-    function toggleLang() {
-      const btn = document.querySelector(".lang-toggle");
-      currentLang = currentLang === 'en' ? 'ar' : 'en';
-      btn.textContent = currentLang === 'en' ? 'عربي' : 'English';
+    // Get data from backend
+    async function loadSensorData() {
+      try {
+        const res = await fetch(`${backendURL}/api/sensors`);
+        const data = await res.json();
 
-      const texts = {
-        en: [
-          'Soil Moisture',
-          'Temperature',
-          'Humidity',
-          'Light Level',
-          'Rain Forecast'
-        ],
-        ar: [
-          'رطوبة التربة',
-          'درجة الحرارة',
-          'الرطوبة',
-          'شدة الإضاءة',
-          'توقع المطر'
-        ]
-      };
-      dashboard.querySelectorAll(".card").forEach((card, i) => {
-        card.querySelector("h3").textContent = texts[currentLang][i];
-      });
+        document.getElementById("moisture-val").textContent = data.soil_moisture + "%";
+        document.getElementById("moisture-bar").style.width = data.soil_moisture + "%";
+
+        document.getElementById("temp-val").textContent = data.temperature + "°C";
+        document.getElementById("temp-bar").style.width = (data.temperature * 3) + "%";
+
+        document.getElementById("humidity-val").textContent = data.humidity + "%";
+        document.getElementById("humidity-bar").style.width = data.humidity + "%";
+
+        document.getElementById("ldr-val").textContent = data.ldr + " Lux";
+        document.getElementById("ldr-bar").style.width = (data.ldr / 10) + "%"; // adjust scale
+      } catch (err) {
+        console.error("❌ Error fetching sensor data:", err);
+      }
     }
 
+    // Load data on page load
+    window.onload = loadSensorData;
+
+    // Dark/light mode
     function toggleMode() {
       const body = document.body;
       const btn = document.querySelector(".mode-toggle");
       const isLight = body.classList.toggle("light-mode");
       btn.textContent = isLight ? '☀' : '🌙';
+    }
+
+    // Language toggle
+    function toggleLang() {
+      const btn = document.querySelector(".lang-toggle");
+      const currentLang = btn.textContent === 'عربي' ? 'en' : 'ar';
+      btn.textContent = currentLang === 'en' ? 'عربي' : 'English';
+
+      const texts = {
+        en: ['Soil Moisture', 'Temperature', 'Humidity', 'Light Level'],
+        ar: ['رطوبة التربة', 'درجة الحرارة', 'الرطوبة', 'شدة الإضاءة']
+      };
+
+      document.querySelectorAll(".card h3").forEach((el, i) => {
+        el.textContent = texts[currentLang][i];
+      });
     }
   </script>
 </body>
