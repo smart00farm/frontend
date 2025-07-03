@@ -206,4 +206,35 @@
     function toggleLang() {
       const btn = document.querySelector(".lang-toggle");
       currentLang = currentLang === 'en' ? 'ar' : 'en';
-      btn.textContent = currentLang === '
+      btn.textContent = currentLang === 'en' ? 'عربي' : 'English';
+
+      const texts = {
+        en: [
+          'Soil Moisture',
+          'Temperature',
+          'Humidity',
+          'Light Level',
+          'Rain Forecast'
+        ],
+        ar: [
+          'رطوبة التربة',
+          'درجة الحرارة',
+          'الرطوبة',
+          'شدة الإضاءة',
+          'توقع المطر'
+        ]
+      };
+      dashboard.querySelectorAll(".card").forEach((card, i) => {
+        card.querySelector("h3").textContent = texts[currentLang][i];
+      });
+    }
+
+    function toggleMode() {
+      const body = document.body;
+      const btn = document.querySelector(".mode-toggle");
+      const isLight = body.classList.toggle("light-mode");
+      btn.textContent = isLight ? '☀' : '🌙';
+    }
+  </script>
+</body>
+</html>
