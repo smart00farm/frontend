@@ -202,41 +202,38 @@
   </section>
 
   <script>
-    let currentLang = 'en';
-    const dashboard = document.getElementById("dashboard");
+  async function fetchSensorData() {
+    try {
+      const response = await fetch('https://your-backend-url/api/data'); // ← غيّر بالرابط الصحيح
+      const data = await response.json();
 
-    function toggleLang() {
-      const btn = document.querySelector(".lang-toggle");
-      currentLang = currentLang === 'en' ? 'ar' : 'en';
-      btn.textContent = currentLang === 'en' ? 'عربي' : 'English';
+      const values = [
+        { value: data.soil_moisture, unit: '%', max: 100 },
+        { value: data.temperature, unit: '°C', max: 50 },
+        { value: data.humidity, unit: '%', max: 100 },
+        { value: data.light, unit: 'Lux', max: 1000 },
+        { value: data.rain, unit: '% Chance', max: 100 }
+      ];
 
-      const texts = {
-        en: [
-          'Soil Moisture',
-          'Temperature',
-          'Humidity',
-          'Light Level',
-          'Rain Forecast'
-        ],
-        ar: [
-          'رطوبة التربة',
-          'درجة الحرارة',
-          'الرطوبة',
-          'شدة الإضاءة',
-          'توقع المطر'
-        ]
-      };
-      dashboard.querySelectorAll(".card").forEach((card, i) => {
-        card.querySelector("h3").textContent = texts[currentLang][i];
+      document.querySelectorAll(".dashboard .card").forEach((card, i) => {
+        const progress = card.querySelector(".progress");
+        const label = card.querySelector(".value-label");
+
+        const percent = Math.min(100, (values[i].value / values[i].max) * 100);
+        progress.style.width = `${percent}%`;
+        label.textContent = `${values[i].value} ${values[i].unit}`;
       });
+    } catch (err) {
+      console.error('Error fetching sensor data:', err);
     }
+  }
 
-    function toggleMode() {
-      const body = document.body;
-      const btn = document.querySelector(".mode-toggle");
-      const isLight = body.classList.toggle("light-mode");
-      btn.textContent = isLight ? '☀' : '🌙';
-    }
-  </script>
+  // أول مرة عند التحميل
+  fetchSensorData();
+
+  // تحديث كل 10 ثواني
+  setInterval(fetchSensorData, 10000);
+</script>
+
 </body>
 </html>
