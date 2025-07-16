@@ -208,13 +208,12 @@
       const data = await response.json();
 
       const values = [
-        { value: data.soil_moisture, unit: '%', max: 100 },
-        { value: data.temperature, unit: '°C', max: 50 },
-        { value: data.humidity, unit: '%', max: 100 },
-        { value: data.light, unit: 'Lux', max: 1000 },
-        { value: data.rain, unit: '% Chance', max: 100 }
-      ];
-
+  { value: data.soil_moisture, unit: '%', max: 100 },
+  { value: data.temperature, unit: '°C', max: 50 },
+  { value: data.humidity, unit: '%', max: 100 },
+  { value: data.ldr, unit: 'Lux', max: 1000 },
+  { value: data.tds, unit: 'ppm', max: 2000 }
+];
       document.querySelectorAll(".dashboard .card").forEach((card, i) => {
         const progress = card.querySelector(".progress");
         const label = card.querySelector(".value-label");
