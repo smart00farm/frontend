@@ -403,17 +403,16 @@
         
         // Auto-refresh data every 3 seconds
         setInterval(() => {
-            fetch('/status')
-                .then(r => r.text())
-                .then(updateStatus)
-                .catch(err => console.error('Status update failed:', err));
-                
-            fetch('/moisture')
-                .then(r => r.text())
-                .then(updateMoisture)
-                .catch(err => console.error('Moisture update failed:', err));
-        }, 3000);
-        
+    fetch('/api/sensors')
+    .then(res => res.json())
+    .then(data => {
+        updateStatus(data.pump_status);
+        updateMoisture(data.soil_moisture);
+        updateTemperature(data.temperature);
+        updateHumidity(data.humidity);
+    })
+    .catch(err => console.error("Sensor data fetch failed:", err));
+ 
         // Add CSS animation
         const style = document.createElement('style');
         style.textContent = `
