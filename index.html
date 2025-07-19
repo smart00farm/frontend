@@ -340,102 +340,99 @@
         </div>
     </div>
 
-    <script>
-        function sendCommand(cmd) {
-            fetch('/' + cmd)
-                .then(response => response.text())
-                .then(data => {
-                    updateStatus(data);
-                    showNotification('تم تنفيذ الأمر بنجاح');
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    showNotification('خطأ في تنفيذ الأمر', 'error');
-                });
-        }
+    <!-- 🟢 بعد الـ setInterval أضف دوال التحديث الباقية -->
+<script>
+    function updateTDS(val) {
+        document.getElementById("tdsValue").textContent = val + " ppm";
+        document.getElementById("tdsTime").textContent = new Date().toLocaleTimeString("ar-EG");
+    }
+
+    function updateLight(val) {
+        document.getElementById("lightValue").textContent = val;
+        document.getElementById("lightTime").textContent = new Date().toLocaleTimeString("ar-EG");
+    }
+
+    function updateMotion(val) {
+        document.getElementById("motionValue").textContent = val ? "تم الكشف عن حركة" : "لا توجد حركة";
+        document.getElementById("motionTime").textContent = new Date().toLocaleTimeString("ar-EG");
+    }
+
+    // 🔄 تحديث البيانات تلقائيًا
+    setInterval(() => {
+        fetch('/api/sensors')
+            .then(res => res.json())
+            .then(data => {
+                updateStatus(data.pump_status);
+                updateMoisture(data.soil_moisture);
+                updateTemperature(data.temperature);
+                updateHumidity(data.humidity);
+                updateTDS(data.tds);
+                updateLight(data.ldr);
+                updateMotion(data.sr206_motion);
+            })
+            .catch(err => console.error("Sensor data fetch failed:", err));
+    }, 3000);
+
+    // ✅ إصلاح تنسيق النسبة المئوية
+    function updateMoisture(val) {
+        const moistureEl = document.getElementById('moistureValue');
+        const progressEl = document.getElementById('moistureProgress');
+        const timeEl = document.getElementById('moistureTime');
         
-        function updateStatus(status) {
-            const statusEl = document.getElementById('pumpStatus');
-            const indicatorEl = document.getElementById('statusIndicator');
-            const timeEl = document.getElementById('statusTime');
-            
-            const isOn = status === 'ON';
-            statusEl.textContent = isOn ? 'تعمل' : 'متوقفة';
-            indicatorEl.className = 'status-indicator ' + (isOn ? 'status-on' : 'status-off');
-            timeEl.textContent = new Date().toLocaleTimeString('ar-EG');
-        }
+        moistureEl.textContent = val + '%';
+        progressEl.style.width = val + '%';
+        timeEl.textContent = new Date().toLocaleTimeString('ar-EG');
+    }
+
+    function updateHumidity(val) {
+        const humidityEl = document.getElementById('humidityValue');
+        const timeEl = document.getElementById('humidityTime');
         
-        function updateMoisture(val) {
-            const moistureEl = document.getElementById('moistureValue');
-            const progressEl = document.getElementById('moistureProgress');
-            const timeEl = document.getElementById('moistureTime');
-            
-            moistureEl.textContent = val + '%%';
-            progressEl.style.width = val + '%%';
-            timeEl.textContent = new Date().toLocaleTimeString('ar-EG');
-        }
-        
-        function updateTemperature(val) {
-            const tempEl = document.getElementById('tempValue');
-            const timeEl = document.getElementById('tempTime');
-            
-            tempEl.textContent = val + '°C';
-            timeEl.textContent = new Date().toLocaleTimeString('ar-EG');
-        }
-        
-        function updateHumidity(val) {
-            const humidityEl = document.getElementById('humidityValue');
-            const timeEl = document.getElementById('humidityTime');
-            
-            humidityEl.textContent = val + '%%';
-            timeEl.textContent = new Date().toLocaleTimeString('ar-EG');
-        }
-        
-        function showNotification(message, type = 'success') {
-            // Create notification element
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                padding: 15px 25px;
-                border-radius: 10px;
-                color: white;
-                font-weight: 600;
-                z-index: 1000;
-                animation: slideIn 0.3s ease;
-                background: ${type === 'success' ? '#2ecc71' : '#e74c3c'};
-            `;
-            notification.textContent = message;
-            
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.remove();
-            }, 3000);
-        }
-        
-        // Auto-refresh data every 3 seconds
-        setInterval(() => {
-    fetch('/api/sensors')
-    .then(res => res.json())
-    .then(data => {
-        updateStatus(data.pump_status);
-        updateMoisture(data.soil_moisture);
-        updateTemperature(data.temperature);
-        updateHumidity(data.humidity);
-    })
-    .catch(err => console.error("Sensor data fetch failed:", err));
- 
-        // Add CSS animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideIn {
-                from { transform: translateX(100%); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
-            }
+        humidityEl.textContent = val + '%';
+        timeEl.textContent = new Date().toLocaleTimeString('ar-EG');
+    }
+
+    function updateStatus(status) {
+        const statusEl = document.getElementById('pumpStatus');
+        const timeEl = document.getElementById('statusTime');
+
+        statusEl.textContent = status === 'on' ? 'تعمل' : 'متوقفة';
+        timeEl.textContent = new Date().toLocaleTimeString('ar-EG');
+    }
+
+    // ✅ نضيف كود التنبيه الحركي
+    function showNotification(message, type = 'success') {
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+            background: ${type === 'success' ? '#2ecc71' : '#e74c3c'};
         `;
-        document.head.appendChild(style);
-    </script>
+        notification.textContent = message;
+
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.remove();
+        }, 3000);
+    }
+
+    // ✅ CSS للأنيميشن
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    `;
+    document.head.appendChild(style);
+</script>
 </body>
 </html>
