@@ -271,36 +271,33 @@
             <p>المراقبة والتحكم في نظام الري الذكي</p>
         </div>
         
-        <div class="dashboard">
+        <div class="sensor-card">
+  <h3><span class="emoji">🌱</span>رطوبة التربة</h3>
+  <div class="sensor-value" id="moistureValue">--%</div>
+  <div class="progress-bar" id="moistureProgress"></div>
+  <div class="last-updated">آخر تحديث: <span id="moistureTime">الآن</span></div>
+</div>
             <div class="sensor-card">
-                <h3><span class="emoji">💧</span>رطوبة التربة</h3>
-                <div class="sensor-value soil-moisture" id="moistureValue">--%</div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="moistureProgress" style="width: --%"></div>
-                </div>
-                <div class="last-updated">آخر تحديث: <span id="moistureTime">الآن</span></div>
-            </div>
-            <div class="sensor-card">
-                <h3><span class="emoji">🌡</span>درجة الحرارة</h3>
-                <div class="sensor-value temperature" id="tempValue">--%°C</div>
-                <div class="last-updated">آخر تحديث: <span id="tempTime">الآن</span></div>
-            </div>
+  <h3><span class="emoji">🌡</span>درجة الحرارة</h3>
+  <div class="sensor-value temperature" id="tempValue">--°C</div>
+  <div class="last-updated">آخر تحديث: <span id="tempTime">الآن</span></div>
+</div>
             
             <div class="sensor-card">
-                <h3><span class="emoji">💨</span>الرطوبة الجوية</h3>
-                <div class="sensor-value humidity" id="humidityValue">--%</div>
-                <div class="last-updated">آخر تحديث: <span id="humidityTime">الآن</span></div>
-            </div>
-            <div class="sensor-card">
+  <h3><span class="emoji">💧</span>الرطوبة</h3>
+  <div class="sensor-value" id="humidityValue">--%</div>
+  <div class="last-updated">آخر تحديث: <span id="humidityTime">الآن</span></div>
+</div>
+    <div class="sensor-card">
     <h3><span class="emoji">🧂</span>ملوحة المياه (TDS)</h3>
     <div class="sensor-value" style="color: #f39c12;" id="tdsValue">-- ppm</div>
     <div class="last-updated">آخر تحديث: <span id="tdsTime">الآن</span></div>
 </div>
             <!-- كارت شدة الإضاءة -->
 <div class="sensor-card">
-    <h3><span class="emoji">💡</span>شدة الإضاءة</h3>
-    <div class="sensor-value" style="color: #3498db;" id="lightValue">--</div>
-    <div class="last-updated">آخر تحديث: <span id="lightTime">الآن</span></div>
+  <h3><span class="emoji">💡</span>الاضائه</h3>
+  <div class="sensor-value" id="lightValue">--</div>
+  <div class="last-updated">آخر تحديث: <span id="lightTime">الآن</span></div>
 </div>
 
 <div class="sensor-card">
