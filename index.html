@@ -356,6 +356,13 @@
         document.getElementById("motionValue").textContent = val ? "تم الكشف عن حركة" : "لا توجد حركة";
         document.getElementById("motionTime").textContent = new Date().toLocaleTimeString("ar-EG");
     }
+   function updateTemperature(val) {
+    const tempEl = document.getElementById('tempValue');
+    const timeEl = document.getElementById('tempTime');
+
+    tempEl.textContent = val + '°C';
+    timeEl.textContent = new Date().toLocaleTimeString('ar-EG');
+}
 
     // 🔄 تحديث البيانات تلقائيًا
     setInterval(() => {
