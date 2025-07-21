@@ -359,7 +359,7 @@
 
     // 🔄 تحديث البيانات تلقائيًا
     setInterval(() => {
-        fetch('/api/sensors')
+        fetch('https://bc9aba15-ae9e-48fc-a83f-6675ab5f5199-00-3uieuxvtmky2r.riker.replit.dev/api/sensors')
             .then(res => res.json())
             .then(data => {
                 updateStatus(data.pump_status);
