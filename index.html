@@ -339,6 +339,7 @@
 
     <!-- 🟢 بعد الـ setInterval أضف دوال التحديث الباقية -->
 <script>
+    // تعريف الدوال أولاً
     function updateTDS(val) {
         document.getElementById("tdsValue").textContent = val + " ppm";
         document.getElementById("tdsTime").textContent = new Date().toLocaleTimeString("ar-EG");
@@ -353,44 +354,71 @@
         document.getElementById("motionValue").textContent = val ? "تم الكشف عن حركة" : "لا توجد حركة";
         document.getElementById("motionTime").textContent = new Date().toLocaleTimeString("ar-EG");
     }
-   function updatetemperature(val) {
-    const tempEl = document.getElementById('tempValue');
-    const timeEl = document.getElementById('tempTime');
 
-    tempEl.textContent = val + '°C';
-    timeEl.textContent = new Date().toLocaleTimeString('ar-EG');
-}
-// دالة تحديث البيانات يدويًا بناءً على JSON المقدم
-function loadManualData() {
-    const data = {
-        pump_status: "on",
-        soil_moisture: 0,
-        temperature: 24.9,
-        humidity: 62,
-        tds: 12,
-        ldr: 0,
-        sr206_motion: false
-    };
+    function updateTemperature(val) {
+        const tempEl = document.getElementById('tempValue');
+        const timeEl = document.getElementById('tempTime');
+        tempEl.textContent = val + '°C';
+        timeEl.textContent = new Date().toLocaleTimeString('ar-EG');
+    }
 
-    updateStatus(data.pump_status);
-    updateMoisture(data.soil_moisture);
-    updateTemperature(data.temperature);
-    updateHumidity(data.humidity);
-    updateTDS(data.tds);
-    updateLight(data.ldr);
-    updateMotion(data.sr206_motion);
-    document.getElementById('statusTime').textContent = new Date(1753112275428).toLocaleTimeString('ar-EG');
-    document.getElementById('moistureTime').textContent = new Date(1753112275428).toLocaleTimeString('ar-EG');
-    document.getElementById('tempTime').textContent = new Date(1753112275428).toLocaleTimeString('ar-EG');
-    document.getElementById('humidityTime').textContent = new Date(1753112275428).toLocaleTimeString('ar-EG');
-    document.getElementById('tdsTime').textContent = new Date(1753112275428).toLocaleTimeString('ar-EG');
-    document.getElementById('lightTime').textContent = new Date(1753112275428).toLocaleTimeString('ar-EG');
-    document.getElementById('motionTime').textContent = new Date(1753112275428).toLocaleTimeString('ar-EG');
-}
+    function updateMoisture(val) {
+        const moistureEl = document.getElementById('moistureValue');
+        const progressEl = document.getElementById('moistureProgress');
+        const timeEl = document.getElementById('moistureTime');
+        moistureEl.textContent = val + '%';
+        progressEl.style.width = val + '%';
+        timeEl.textContent = new Date().toLocaleTimeString('ar-EG');
+    }
 
-// استدعاء الدالة عند تحميل الصفحة
-window.onload = loadManualData;
-    // 🔄 تحديث البيانات تلقائيًا
+    function updateHumidity(val) {
+        const humidityEl = document.getElementById('humidityValue');
+        const timeEl = document.getElementById('humidityTime');
+        humidityEl.textContent = val + '%';
+        timeEl.textContent = new Date().toLocaleTimeString('ar-EG');
+    }
+
+    function updateStatus(status) {
+        const statusEl = document.getElementById('pumpStatus'); // تأكد من المعرف
+        const timeEl = document.getElementById('statusTime');
+        statusEl.textContent = status === 'on' ? 'تعمل' : 'متوقفة';
+        timeEl.textContent = new Date().toLocaleTimeString('ar-EG');
+    }
+
+    // دالة تحميل البيانات يدويًا
+    function loadManualData() {
+        const data = {
+            pump_status: "on",
+            soil_moisture: 0,
+            temperature: 24.9,
+            humidity: 62,
+            tds: 12,
+            ldr: 0,
+            sr206_motion: false
+        };
+
+        updateStatus(data.pump_status);
+        updateMoisture(data.soil_moisture);
+        updateTemperature(data.temperature);
+        updateHumidity(data.humidity);
+        updateTDS(data.tds);
+        updateLight(data.ldr);
+        updateMotion(data.sr206_motion);
+        // استخدام الوقت الحالي بدلاً من timestamp غير صحيح
+        const currentTime = new Date().toLocaleTimeString('ar-EG');
+        document.getElementById('statusTime').textContent = currentTime;
+        document.getElementById('moistureTime').textContent = currentTime;
+        document.getElementById('tempTime').textContent = currentTime;
+        document.getElementById('humidityTime').textContent = currentTime;
+        document.getElementById('tdsTime').textContent = currentTime;
+        document.getElementById('lightTime').textContent = currentTime;
+        document.getElementById('motionTime').textContent = currentTime;
+    }
+
+    // استدعاء الدالة عند تحميل الصفحة
+    window.onload = loadManualData;
+
+    // تحديث دوري من الـ API
     setInterval(() => {
         fetch('https://bc9aba15-ae9e-48fc-a83f-6675ab5f5199-00-3uieuxvtmky2r.riker.replit.dev/api/sensors')
             .then(res => res.json())
@@ -402,38 +430,20 @@ window.onload = loadManualData;
                 updateTDS(data.tds);
                 updateLight(data.ldr);
                 updateMotion(data.sr206_motion);
+                // تحديث الوقت الحالي
+                const currentTime = new Date().toLocaleTimeString('ar-EG');
+                document.getElementById('statusTime').textContent = currentTime;
+                document.getElementById('moistureTime').textContent = currentTime;
+                document.getElementById('tempTime').textContent = currentTime;
+                document.getElementById('humidityTime').textContent = currentTime;
+                document.getElementById('tdsTime').textContent = currentTime;
+                document.getElementById('lightTime').textContent = currentTime;
+                document.getElementById('motionTime').textContent = currentTime;
             })
             .catch(err => console.error("Sensor data fetch failed:", err));
     }, 3000);
 
-    // ✅ إصلاح تنسيق النسبة المئوية
-    function updateMoisture(val) {
-        const moistureEl = document.getElementById('moistureValue');
-        const progressEl = document.getElementById('moistureProgress');
-        const timeEl = document.getElementById('moistureTime');
-        
-        moistureEl.textContent = val + '%';
-        progressEl.style.width = val + '%';
-        timeEl.textContent = new Date().toLocaleTimeString('ar-EG');
-    }
-
-    function updateHumidity(val) {
-        const humidityEl = document.getElementById('humidityValue');
-        const timeEl = document.getElementById('humidityTime');
-        
-        humidityEl.textContent = val + '%';
-        timeEl.textContent = new Date().toLocaleTimeString('ar-EG');
-    }
-
-    function updateStatus(status) {
-        const statusEl = document.getElementById('pumpStatus');
-        const timeEl = document.getElementById('statusTime');
-
-        statusEl.textContent = status === 'on' ? 'تعمل' : 'متوقفة';
-        timeEl.textContent = new Date().toLocaleTimeString('ar-EG');
-    }
-
-    // ✅ نضيف كود التنبيه الحركي
+    // دالة التنبيه
     function showNotification(message, type = 'success') {
         const notification = document.createElement('div');
         notification.style.cssText = `
@@ -449,15 +459,13 @@ window.onload = loadManualData;
             background: ${type === 'success' ? '#2ecc71' : '#e74c3c'};
         `;
         notification.textContent = message;
-
         document.body.appendChild(notification);
-
         setTimeout(() => {
             notification.remove();
         }, 3000);
     }
 
-    // ✅ CSS للأنيميشن
+    // CSS للأنيميشن
     const style = document.createElement('style');
     style.textContent = `
         @keyframes slideIn {
