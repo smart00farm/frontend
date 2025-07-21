@@ -360,7 +360,36 @@
     tempEl.textContent = val + '°C';
     timeEl.textContent = new Date().toLocaleTimeString('ar-EG');
 }
+// دالة تحديث البيانات يدويًا بناءً على JSON المقدم
+function loadManualData() {
+    const data = {
+        pump_status: "on",
+        soil_moisture: 0,
+        temperature: 24.9,
+        humidity: 62,
+        tds: 12,
+        ldr: 0,
+        sr206_motion: false
+    };
 
+    updateStatus(data.pump_status);
+    updateMoisture(data.soil_moisture);
+    updateTemperature(data.temperature);
+    updateHumidity(data.humidity);
+    updateTDS(data.tds);
+    updateLight(data.ldr);
+    updateMotion(data.sr206_motion);
+    document.getElementById('statusTime').textContent = new Date(1753112275428).toLocaleTimeString('ar-EG');
+    document.getElementById('moistureTime').textContent = new Date(1753112275428).toLocaleTimeString('ar-EG');
+    document.getElementById('tempTime').textContent = new Date(1753112275428).toLocaleTimeString('ar-EG');
+    document.getElementById('humidityTime').textContent = new Date(1753112275428).toLocaleTimeString('ar-EG');
+    document.getElementById('tdsTime').textContent = new Date(1753112275428).toLocaleTimeString('ar-EG');
+    document.getElementById('lightTime').textContent = new Date(1753112275428).toLocaleTimeString('ar-EG');
+    document.getElementById('motionTime').textContent = new Date(1753112275428).toLocaleTimeString('ar-EG');
+}
+
+// استدعاء الدالة عند تحميل الصفحة
+window.onload = loadManualData;
     // 🔄 تحديث البيانات تلقائيًا
     setInterval(() => {
         fetch('https://bc9aba15-ae9e-48fc-a83f-6675ab5f5199-00-3uieuxvtmky2r.riker.replit.dev/api/sensors')
